@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="fr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ATAC chambre des métiers – Adhésion</title>
+<style>
+:root{--b:#1f3f8f;--r:#c8102e;--y:#f5c400;--l:#d6e8fa;--bg:#f3f7fc;--t:#1b2433;--c:#fff;--bd:#c9d6e8}
+@media(prefers-color-scheme:dark){:root{--bg:#111827;--t:#e8eef9;--c:#1b2436;--bd:#33425e;--l:#22304d;--b:#7da2f0}}
+*{box-sizing:border-box}body{margin:0;font-family:Segoe UI,Calibri,Arial,sans-serif;background:var(--bg);color:var(--t)}
+.hd{width:100%;display:block}.wrap{max-width:900px;margin:auto;padding:14px}
+.card{background:var(--c);border:1px solid var(--bd);border-radius:10px;padding:16px;margin-bottom:14px}
+h2{margin:0 0 10px;color:var(--b);font-size:1.15rem;border-bottom:3px solid var(--y);padding-bottom:4px}
+label{font-weight:600;font-size:.85rem;display:block;margin-bottom:3px}
+input,select,textarea{width:100%;padding:9px;border:1px solid var(--bd);border-radius:6px;background:var(--bg);color:var(--t);font:inherit}
+.g{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
+.f{display:flex;flex-wrap:wrap;gap:8px}.f label{font-weight:400;background:var(--l);padding:6px 10px;border-radius:20px;display:flex;gap:6px;align-items:center;margin:0}.f input{width:auto}
+button{background:var(--b);color:#fff;border:0;border-radius:6px;padding:9px 14px;font:inherit;font-weight:600;cursor:pointer;margin:3px 3px 3px 0}
+@media(prefers-color-scheme:dark){button{background:#3b5bb0}}
+button.r{background:var(--r)}button.s{background:#5b6677}
+table{width:100%;border-collapse:collapse;font-size:.88rem}th,td{border:1px solid var(--bd);padding:6px;text-align:left}th{background:var(--l)}
+.ph{width:90px;height:110px;border:2px dashed var(--bd);object-fit:cover;border-radius:6px}
+.ft{text-align:center;font-size:.8rem;padding:14px;border-top:4px solid var(--r);margin-top:10px}
+#fiche{display:none}.cg{display:grid;grid-template-columns:repeat(2,86mm);gap:4mm;padding:8mm 18mm}.cg img{width:86mm;break-inside:avoid;border:1px dotted #999}
+@media print{body>*:not(#fiche){display:none!important}#fiche{display:block;background:#fff;color:#000}@page{size:A4;margin:0}}
+#fiche{width:210mm;min-height:297mm;position:relative;font-size:11pt}#fiche .fb{padding:6mm 18mm}#fiche .row{display:flex;gap:10mm;margin:3mm 0;border-bottom:1px dotted #555;min-height:6mm}#fiche .row b{white-space:nowrap}
+#fiche .pf{position:absolute;bottom:0;left:0;right:0;text-align:center;font-size:9pt;border-top:2px solid var(--r);margin:0 18mm 8mm;padding-top:2mm}
+</style></head><body>
+<img class="hd" src="entete_atac.png" alt="En-tête ATAC chambre des métiers">
+<div class="wrap">
+<div id="login" class="card"><h2>Accès administrateur</h2>
+<label>Nom d’utilisateur</label><input id="un" autocomplete="username" style="margin-bottom:8px" onkeydown="if(event.key=='Enter')$('pw').focus()"><label>Mot de passe</label><input id="pw" type="password" onkeydown="if(event.key=='Enter')go()"><button onclick="go()">Entrer</button><span id="err" style="color:var(--r)"></span></div>
+<div id="app" hidden><div class="card" style="display:flex;justify-content:space-between;align-items:center;gap:8px"><span>👤 Connecté : <b id="who"></b> <small id="role"></small></span><button class="s" onclick="location.reload()">Déconnexion</button></div>
+<div class="card" id="adm" hidden><h2>Utilisateurs (agents)</h2><div class="g"><div><label>Nom d’utilisateur</label><input id="nu"></div><div><label>Mot de passe</label><input id="np" type="password"></div></div><p><button onclick="addU()">Ajouter l’agent</button></p><div id="ul"></div></div>
+<div class="card"><h2>Fiche d’adhésion</h2>
+<div class="g">
+<div><label>Nom</label><input id="nom"></div><div><label>Post-nom</label><input id="postnom"></div><div><label>Prénom</label><input id="prenom"></div>
+<div><label>État civil</label><select id="ec"><option></option><option>Célibataire</option><option>Marié(e)</option><option>Divorcé(e)</option><option>Veuf(ve)</option></select></div>
+<div><label>Sexe</label><select id="sexe"><option></option><option>Féminin</option><option>Masculin</option></select></div>
+<div><label>Nationalité</label><input id="nat" value="Congolaise"></div>
+<div><label>Titre</label><input id="titre" value="ATAC"></div><div><label>Profession</label><input id="prof"></div><div><label>Fonction</label><input id="fonc"></div><div><label>Province</label><input id="prov" value="Kinshasa"></div>
+<div><label>Téléphone</label><input id="tel" type="tel"></div><div><label>Téléphone 2</label><input id="tel2" type="tel"></div>
+<div><label>E-mail</label><input id="mail" type="email"></div><div><label>Personne à contacter en cas d’urgence</label><input id="urg"></div>
+</div><label style="margin-top:10px">Adresse</label><input id="adr">
+<label style="margin-top:10px">Filières</label>
+<div class="f" id="fil"></div><input id="autre" placeholder="Autre filière" style="margin-top:8px">
+<div class="g" style="margin-top:10px"><div><label>Fait à</label><input id="lieu" value="Kinshasa"></div><div><label>Date</label><input id="date" type="date"></div>
+<div><label>Visa du comité</label><select id="visa"><option></option><option>Favorable</option><option>Non favorable</option></select></div><div><label>N° d’ordre / Matricule</label><input id="mat"></div></div>
+<div style="margin-top:10px;display:flex;gap:12px;align-items:center"><img id="pv" class="ph" alt=""><div><label>Photo de l’identifié(e)</label><input type="file" id="pf" accept="image/*"></div></div>
+<p><button onclick="save()">Enregistrer</button><button class="s" onclick="clr()">Nouveau</button></p></div>
+<div class="card"><h2>Adhérents enregistrés (<span id="n">0</span>)</h2>
+<input id="q" placeholder="Rechercher…" oninput="list()"><div style="overflow-x:auto;margin-top:8px"><table><thead><tr><th>N°</th><th>Nom complet</th><th>Profession</th><th>Téléphone</th><th>Date</th><th>Agent</th><th></th></tr></thead><tbody id="tb"></tbody></table></div>
+</div><div class="card"><h2>Rapports</h2><div class="g"><div><label>Du</label><input id="rd1" type="date"></div><div><label>Au</label><input id="rd2" type="date"></div><div><label>Filière</label><select id="rf"><option value="">Toutes</option></select></div><div><label>Visa</label><select id="rv"><option value="">Tous</option><option>Favorable</option><option>Non favorable</option></select></div></div><p><button onclick="rap()">Imprimer</button><button onclick="rw()">Word</button><button onclick="xl()">Excel</button><button class="s" onclick="csv()">CSV</button><button class="r" onclick="lot()">Imprimer les cartes de la liste</button></p></div>
+<div class="card" id="cartes" hidden><h2>Carte de membre</h2><label style="margin:0 0 8px;font-weight:400"><input type="checkbox" id="inv" style="width:auto" onchange="carte(cur2.id)"> Inverser recto / verso (« Laisser passer » devant)</label><div class="g"><canvas id="cr" style="width:100%"></canvas><canvas id="cv" style="width:100%"></canvas></div><p><button onclick="pc()">Imprimer recto + verso</button><button class="s" onclick="png('cr','recto')">PNG recto</button><button class="s" onclick="png('cv','verso')">PNG verso</button></p></div>
+</div></div>
+<div class="ft"><b>ATAC chambre des métiers</b><br>Association des Techniciens et Artisans du Congo<br>Avenue Kamak 2 n°4, entrée Météo, Binza Delvaux, commune de Ngaliema – Kinshasa</div>
+<div id="fiche"></div>
+<script src="https://cdn.jsdelivr.net/npm/docx@8.5.0/build/index.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+const PW='atac2026',FIL=['Froid','Électricité','Maçonnerie','Menuiserie','Soudure','Plomberie','Mécanique','Informatique'];
+const $=i=>document.getElementById(i),K='atac_adherents',IDS='nom postnom prenom ec sexe nat titre prof tel tel2 mail urg adr lieu date visa mat autre fonc prov'.split(' ');
+let D=[],cur=null,photo='';
+try{D=JSON.parse(localStorage.getItem(K)||'[]')}catch(e){}
+const persist=()=>{try{localStorage.setItem(K,JSON.stringify(D))}catch(e){alert('Stockage plein : exportez en CSV puis supprimez d’anciennes fiches.')}};
+const sha=async s=>crypto.subtle?[...new Uint8Array(await crypto.subtle.digest('SHA-256',new TextEncoder().encode(s)))].map(b=>b.toString(16).padStart(2,'0')).join(''):btoa(unescape(encodeURIComponent(s)));
+let U=[],me='',adm=false;try{U=JSON.parse(localStorage.getItem('atac_users')||'[]')}catch(e){}
+const pu=()=>{try{localStorage.setItem('atac_users',JSON.stringify(U))}catch(e){}};
+async function go(){const u=$('un').value.trim().toLowerCase(),p=$('pw').value;
+ if(u==='admin'&&p===PW)adm=true;
+ let ok=adm;if(!ok&&u){const h=await sha(p);ok=U.some(x=>x.u===u&&x.h===h)}
+ if(!ok){$('err').textContent=' Nom d’utilisateur ou mot de passe incorrect';return}
+ me=u;$('who').textContent=u;$('role').textContent=adm?'(administrateur)':'(agent)';$('adm').hidden=!adm;if(adm)ulist();$('login').hidden=true;$('app').hidden=false;init()}
+function ulist(){$('ul').innerHTML=U.length?'<div class="f">'+U.map(x=>`<label>${esc(x.u)} <button class="r" onclick="delU('${esc(x.u)}')">✕</button></label>`).join('')+'</div>':'<small>Aucun agent. Ajoutez-en pour que chacun ait son propre accès.</small>'}
+async function addU(){const u=$('nu').value.trim().toLowerCase(),p=$('np').value;if(!/^[a-z0-9._-]{3,}$/.test(u)||u=='admin'||U.some(x=>x.u==u)||p.length<4)return alert('Nom invalide (3 caractères min., lettres/chiffres), déjà utilisé, ou mot de passe trop court (4 min.)');U.push({u,h:await sha(p)});pu();$('nu').value=$('np').value='';ulist()}
+function delU(u){if(confirm('Supprimer l’agent '+u+' ?')){U=U.filter(x=>x.u!=u);pu();ulist()}}
+function init(){$('fil').innerHTML=FIL.map(f=>`<label><input type="checkbox" value="${f}">${f}</label>`).join('');$('rd1').value=$('rd2').value=$('date').value=new Date().toISOString().slice(0,10);$('rf').innerHTML+=FIL.map(f=>`<option>${f}</option>`).join('');list()}
+$('pf').onchange=e=>{const r=new FileReader();r.onload=()=>{const i=new Image();i.onload=()=>{const c=document.createElement('canvas'),s=Math.min(1,320/i.height);c.width=i.width*s;c.height=i.height*s;c.getContext('2d').drawImage(i,0,0,c.width,c.height);photo=c.toDataURL('image/jpeg',.8);$('pv').src=photo};i.src=r.result};r.readAsDataURL(e.target.files[0])};
+function get(){const o={id:cur||Date.now(),photo,fil:[...document.querySelectorAll('#fil input:checked')].map(x=>x.value)};IDS.forEach(k=>o[k]=$(k).value.trim());return o}
+function save(){const o=get();const ex=D.find(x=>x.id==o.id);o.agent=ex?ex.agent:me;if(!o.nom||!o.prenom){alert('Nom et prénom obligatoires');return}
+ if(!o.mat)o.mat='ATAC-'+String(D.length+1).padStart(4,'0');const i=D.findIndex(x=>x.id==o.id);i<0?D.push(o):D[i]=o;persist();clr();list()}
+function clr(){cur=null;photo='';$('pv').removeAttribute('src');IDS.forEach(k=>$(k).value='');$('nat').value='Congolaise';$('titre').value='ATAC';$('lieu').value=$('prov').value='Kinshasa';$('date').value=new Date().toISOString().slice(0,10);document.querySelectorAll('#fil input').forEach(x=>x.checked=false)}
+function edit(id){const o=D.find(x=>x.id==id);cur=id;photo=o.photo||'';photo?$('pv').src=photo:$('pv').removeAttribute('src');IDS.forEach(k=>$(k).value=o[k]||'');document.querySelectorAll('#fil input').forEach(x=>x.checked=o.fil.includes(x.value));scrollTo(0,0)}
+function del(id){if(!adm)return alert('Suppression réservée à l’administrateur');if(confirm('Supprimer cette fiche ?')){D=D.filter(x=>x.id!=id);persist();list()}}
+const esc=s=>String(s||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function list(){const q=$('q').value.toLowerCase();const L=D.filter(o=>(o.nom+o.postnom+o.prenom+o.prof+o.mat).toLowerCase().includes(q));$('n').textContent=D.length;
+ $('tb').innerHTML=L.map(o=>`<tr><td>${esc(o.mat)}</td><td>${esc(o.nom+' '+o.postnom+' '+o.prenom)}</td><td>${esc(o.prof)}</td><td>${esc(o.tel)}</td><td>${esc(o.date)}</td><td>${esc(o.agent)}</td><td style="white-space:nowrap"><button onclick="edit(${o.id})">Modifier</button><button onclick="carte(${o.id})">Carte</button><button class="s" onclick="pr(${o.id})">Fiche</button><button class="s" onclick="wd(${o.id})">Word</button><button class="r" onclick="del(${o.id})">✕</button></td></tr>`).join('')}
+const row=(a,b,c,d)=>`<div class="row"><b>${a} :</b><span style="flex:1">${esc(b)}</span>${c?`<b>${c} :</b><span style="flex:1">${esc(d)}</span>`:''}</div>`;
+function fh(o){const fl=FIL.map(f=>(o.fil.includes(f)?'☑ ':'☐ ')+f).join(' &nbsp; ')+(o.autre?' &nbsp; ☑ '+esc(o.autre):'');
+ return `<img src="entete_atac.png" style="width:100%;display:block"><div class="fb"><div style="display:flex;justify-content:space-between;align-items:center"><div style="flex:1;text-align:center"><h1 style="margin:0;color:#1f3f8f;font-size:24pt">FICHE D’ADHÉSION</h1><div style="color:#c8102e;font-weight:700">Chambre des métiers – ATAC</div><i style="font-size:10pt;color:#555">Toujours excellent pour une vie meilleure</i></div><div style="width:32mm;height:40mm;border:2px solid #1f3f8f;text-align:center">${o.photo?`<img src="${o.photo}" style="width:100%;height:100%;object-fit:cover">`:'<br><br>PHOTO'}</div></div>
+ <h3 style="background:#d6e8fa;color:#1f3f8f;padding:1mm 2mm">IDENTITÉ</h3>${row('Nom',o.nom,'Post-nom',o.postnom)}${row('Prénom',o.prenom,'État civil',o.ec)}${row('Nationalité',o.nat,'Titre',o.titre)}${row('Sexe',(o.sexe=='Féminin'?'☑':'☐')+' Féminin  '+(o.sexe=='Masculin'?'☑':'☐')+' Masculin')}
+ <h3 style="background:#d6e8fa;color:#1f3f8f;padding:1mm 2mm">PROFESSION ET CONTACTS</h3>${row('Profession',o.prof)}${row('Adresse',o.adr)}${row('Téléphone',o.tel,'Téléphone 2',o.tel2)}${row('E-mail',o.mail)}${row('Contact d’urgence',o.urg)}
+ <h3 style="background:#d6e8fa;color:#1f3f8f;padding:1mm 2mm">FILIÈRES</h3><p>${fl}</p><p style="text-align:right">Fait à ${esc(o.lieu)}, le ${esc(o.date)}</p>
+ ${row('Visa du comité',(o.visa=='Favorable'?'☑':'☐')+' Favorable  '+(o.visa=='Non favorable'?'☑':'☐')+' Non favorable','N° d’ordre / Matricule',o.mat)}
+ <div style="display:flex;justify-content:space-around;text-align:center;margin-top:8mm;height:30mm"><div><b><u>L’identifié(e)</u></b><br>(Nom et signature)</div><div><b><u>Le Coordonnateur général</u></b><br>Architecte Michel KIBANSA OYENTSH</div></div></div>
+ <div class="pf"><b style="color:#1f3f8f">ATAC chambre des métiers</b><br>Association des Techniciens et Artisans du Congo<br>Avenue Kamak 2 n°4, entrée Météo, Binza Delvaux, commune de Ngaliema – Kinshasa</div>`}
+function pr(id){$('fiche').innerHTML=fh(D.find(x=>x.id==id));setTimeout(()=>print(),300)}
+const fd=d=>d?d.split('-').reverse().join('/'):'',dl=(b,n)=>{const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download=n;a.click()};
+const FT='<div class="pf"><b style="color:#1f3f8f">ATAC chambre des métiers</b><br>Association des Techniciens et Artisans du Congo<br>Avenue Kamak 2 n°4, entrée Météo, Binza Delvaux, commune de Ngaliema – Kinshasa</div>';
+function flt(){const a=$('rd1').value,b=$('rd2').value,f=$('rf').value,v=$('rv').value;return D.filter(o=>(!a||o.date>=a)&&(!b||o.date<=b)&&(!f||o.fil.includes(f))&&(!v||o.visa==v))}
+const per=()=>$('rd1').value==$('rd2').value?fd($('rd1').value):'du '+fd($('rd1').value)+' au '+fd($('rd2').value);
+function sm(L){const f={};L.forEach(o=>o.fil.forEach(x=>f[x]=(f[x]||0)+1));return 'Total : '+L.length+' | Féminin : '+L.filter(o=>o.sexe=='Féminin').length+' | Masculin : '+L.filter(o=>o.sexe=='Masculin').length+Object.entries(f).map(([k,v])=>' | '+k+' : '+v).join('')}
+function rap(){const L=flt();$('fiche').innerHTML=`<img src="entete_atac.png" style="width:100%"><div class="fb"><h2 style="text-align:center;color:#1f3f8f">RAPPORT DES ADHÉSIONS – ${per()}</h2><table style="font-size:9pt"><tr><th>N°</th><th>Nom complet</th><th>Sexe</th><th>Profession</th><th>Filières</th><th>Téléphone</th><th>Visa</th><th>Date</th><th>Agent</th></tr>${L.map(o=>`<tr><td>${esc(o.mat)}</td><td>${esc(o.nom+' '+o.postnom+' '+o.prenom)}</td><td>${esc(o.sexe)}</td><td>${esc(o.prof)}</td><td>${esc(o.fil.join(', '))}</td><td>${esc(o.tel)}</td><td>${esc(o.visa)}</td><td>${fd(o.date)}</td><td>${esc(o.agent)}</td></tr>`).join('')}</table><p><b>${sm(L)}</b></p><div style="text-align:right;margin-top:12mm"><b><u>Le Coordonnateur général</u></b><br>Architecte Michel KIBANSA OYENTSH</div></div>${FT}`;setTimeout(()=>print(),300)}
+const rows=L=>L.map(o=>({'N°':o.mat,Nom:o.nom,'Post-nom':o.postnom,Prénom:o.prenom,Sexe:o.sexe,Profession:o.prof,Fonction:o.fonc,Province:o.prov,Filières:o.fil.join(', '),Téléphone:o.tel,'E-mail':o.mail,Adresse:o.adr,Visa:o.visa,Date:o.date,Agent:o.agent}));
+function xl(){const R=rows(flt());if(!R.length)return alert('Aucune fiche pour ces critères');const w=XLSX.utils.book_new(),s=XLSX.utils.json_to_sheet(R);s['!cols']=Object.keys(R[0]).map(()=>({wch:18}));XLSX.utils.book_append_sheet(w,s,'Adhésions');XLSX.writeFile(w,'rapport_ATAC.xlsx')}
+function csv(){const R=rows(flt());if(!R.length)return alert('Aucune fiche pour ces critères');const h=Object.keys(R[0]);dl(new Blob(['\ufeff'+[h.join(';'),...R.map(r=>h.map(k=>'"'+String(r[k]||'').replace(/"/g,'""')+'"').join(';'))].join('\n')],{type:'text/csv'}),'rapport_ATAC.csv')}
+async function rw(){const L=flt(),{Document,Packer,Paragraph,TextRun,ImageRun,Header,Footer,Table,TableRow,TableCell,WidthType,AlignmentType,ShadingType,PageOrientation}=docx,C=AlignmentType.CENTER;
+ const t=(s,x={})=>new TextRun({text:String(s||''),font:'Calibri',size:20,...x});let hd=[];
+ try{const b=new Uint8Array(await(await fetch('entete_atac.png')).arrayBuffer());hd=[new Paragraph({indent:{left:-700,right:-700},children:[new ImageRun({type:'png',data:b,transformation:{width:1122,height:210}})]})]}catch(e){}
+ const W=[1700,3300,900,2000,2600,1700,1300,1938],cell=(s,i,h)=>new TableCell({width:{size:W[i],type:WidthType.DXA},shading:h?{type:ShadingType.CLEAR,fill:'D6E8FA'}:undefined,children:[new Paragraph({children:[t(s,{bold:!!h})]})]});
+ const tb=new Table({width:{size:15438,type:WidthType.DXA},columnWidths:W,rows:[['N°','Nom complet','Sexe','Profession','Filières','Téléphone','Visa','Date'].map((s,i)=>cell(s,i,1)),...L.map(o=>[o.mat,o.nom+' '+o.postnom+' '+o.prenom,o.sexe,o.prof,o.fil.join(', '),o.tel,o.visa,fd(o.date)].map((s,i)=>cell(s,i)))].map(c=>new TableRow({children:c}))});
+ const dc=new Document({sections:[{properties:{page:{size:{width:11906,height:16838,orientation:PageOrientation.LANDSCAPE},margin:{top:2300,bottom:1000,left:700,right:700,header:0,footer:300}}},headers:{default:new Header({children:hd})},footers:{default:new Footer({children:[new Paragraph({alignment:C,children:[t('ATAC chambre des métiers',{bold:true,color:'1F3F8F'})]}),new Paragraph({alignment:C,children:[t('Association des Techniciens et Artisans du Congo – Avenue Kamak 2 n°4, entrée Météo, Binza Delvaux, commune de Ngaliema – Kinshasa',{size:16})]})]})},children:[new Paragraph({alignment:C,spacing:{after:160},children:[t('RAPPORT DES ADHÉSIONS – '+per(),{bold:true,size:30,color:'1F3F8F'})]}),tb,new Paragraph({spacing:{before:200},children:[t(sm(L),{bold:true})]}),new Paragraph({alignment:AlignmentType.RIGHT,spacing:{before:300},children:[t('Le Coordonnateur général',{bold:true,underline:{}})]}),new Paragraph({alignment:AlignmentType.RIGHT,children:[t('Architecte Michel KIBANSA OYENTSH')]})]}]});
+ dl(await Packer.toBlob(dc),'rapport_ATAC.docx')}
+const IM={},ld=s=>{const l=()=>new Promise(r=>{const i=new Image();i.onload=()=>r(i);i.src=s});return s.endsWith('.png')?(IM[s]||(IM[s]=l())):l()};let cur2;
+async function card(o,v){const c=document.createElement('canvas');c.width=1004;c.height=650;const x=c.getContext('2d');x.drawImage(await ld(v?'carte_verso.png':'carte_recto.png'),0,0);if(v)return c;
+ const N='#1a1446';x.fillStyle=N;x.font='bold 21px Arial';x.textBaseline='middle';
+ [[o.nom,395,236],[o.postnom,452,266],[o.prenom,437,297],[o.sexe,398,328],[o.fonc,452,358],[o.prof,478,389],[o.prov,452,420],[o.adr,442,451]].forEach(([s,a,b])=>x.fillText(String(s||'').toUpperCase(),a,b,775-a));
+ x.save();x.beginPath();x.roundRect(93,220,180,220,36);x.clip();x.fillStyle='#fff';x.fillRect(80,210,210,240);
+ if(o.photo){const p=await ld(o.photo),s=Math.max(180/p.width,220/p.height);x.drawImage(p,93+(180-p.width*s)/2,220+(220-p.height*s)/2,p.width*s,p.height*s)}else{x.fillStyle=N;x.font='bold 24px Arial';x.textAlign='center';x.fillText('PHOTO',183,330)}
+ x.restore();x.textAlign='center';x.fillStyle='#ffff00';x.fillRect(75,468,215,29);x.fillStyle='#000';x.font='bold 19px Arial';x.fillText('MATRICULE : '+o.mat,182,483,205);
+ x.textAlign='left';x.fillStyle=N;x.fillText(fd(o.date),305,535);
+ const q=qrcode(0,'M');q.addData('ATAC|'+o.mat+'|'+o.nom+' '+o.postnom+' '+o.prenom+'|'+o.prof+'|'+o.tel);q.make();const n=q.getModuleCount(),k=Math.floor(160/n),ox=793+(160-n*k)/2,oy=252+(160-n*k)/2;
+ x.fillStyle='#fff';x.fillRect(785,245,175,175);x.fillStyle='#000';for(let r=0;r<n;r++)for(let m=0;m<n;m++)if(q.isDark(r,m))x.fillRect(ox+m*k,oy+r*k,k,k);return c}
+async function carte(id){cur2=D.find(x=>x.id==id);for(const[i,v]of[['cr',+$('inv').checked],['cv',+!$('inv').checked]]){const e=$(i);e.width=1004;e.height=650;e.getContext('2d').drawImage(await card(cur2,v),0,0)}$('cartes').hidden=false;$('cartes').scrollIntoView()}
+const png=(i,n)=>$(i).toBlob(b=>dl(b,n+'_'+cur2.mat+'.png'));
+function pc(){$('fiche').innerHTML='<div class="cg"><img src="'+$('cr').toDataURL('image/jpeg',.92)+'"><img src="'+$('cv').toDataURL('image/jpeg',.92)+'"></div>';setTimeout(()=>print(),400)}
+async function lot(){const q=$('q').value.toLowerCase(),L=D.filter(o=>(o.nom+o.postnom+o.prenom+o.prof+o.mat).toLowerCase().includes(q));if(!L.length)return;let s='<div class="cg">';for(const o of L)s+='<img src="'+(await card(o,+$('inv').checked)).toDataURL('image/jpeg',.9)+'"><img src="'+(await card(o,+!$('inv').checked)).toDataURL('image/jpeg',.9)+'">';$('fiche').innerHTML=s+'</div>';setTimeout(()=>print(),600)}
+async function wd(id){const o=D.find(x=>x.id==id),{Document,Packer,Paragraph,TextRun,ImageRun,Header,Footer,AlignmentType,BorderStyle}=docx;
+ const t=(s,x={})=>new TextRun({text:String(s||''),font:'Calibri',size:22,...x}),p=(c,x={})=>new Paragraph({spacing:{after:120},...x,children:c});
+ const bin=u=>Uint8Array.from(atob(u.split(',')[1]),c=>c.charCodeAt(0));let hd=[];
+ try{const b=new Uint8Array(await(await fetch('entete_atac.png')).arrayBuffer());hd=[new Paragraph({indent:{left:-1203,right:-1203},children:[new ImageRun({type:'png',data:b,transformation:{width:794,height:149}})]})]}catch(e){}
+ const L=(a,b)=>p([t(a+' : ',{bold:true}),t(b,{underline:{}})]),fl=FIL.map(f=>(o.fil.includes(f)?'☑ ':'☐ ')+f).join('   ');
+ const kids=[p([t('FICHE D’ADHÉSION',{bold:true,size:40,color:'1F3F8F'})],{alignment:AlignmentType.CENTER}),p([t('Chambre des métiers – ATAC',{bold:true,color:'C8102E'})],{alignment:AlignmentType.CENTER})];
+ if(o.photo)kids.push(p([new ImageRun({type:'jpg',data:bin(o.photo),transformation:{width:90,height:110}})],{alignment:AlignmentType.RIGHT}));
+ kids.push(L('Nom',o.nom),L('Post-nom',o.postnom),L('Prénom',o.prenom),L('État civil',o.ec),L('Sexe',o.sexe),L('Nationalité',o.nat),L('Titre',o.titre),L('Profession',o.prof),L('Adresse',o.adr),L('Téléphones',o.tel+(o.tel2?' / '+o.tel2:'')),L('E-mail',o.mail),L('Contact d’urgence',o.urg),p([t('Filières : ',{bold:true}),t(fl+(o.autre?'   ☑ '+o.autre:''))]),p([t('Fait à '+o.lieu+', le '+o.date)],{alignment:AlignmentType.RIGHT}),L('Visa du comité',o.visa),L('N° d’ordre / Matricule',o.mat),p([t('L’identifié(e)',{bold:true,underline:{}}),t('\t'),t('Le Coordonnateur général',{bold:true,underline:{}})],{tabStops:[{type:'left',position:5200}],spacing:{before:300}}),p([t('(Nom et signature)',{size:20}),t('\t'),t('Architecte Michel KIBANSA OYENTSH',{size:20})],{tabStops:[{type:'left',position:5200}]}));
+ const c=(s,x={})=>new Paragraph({alignment:AlignmentType.CENTER,children:[t(s,{size:18,...x})]});
+ const dc=new Document({sections:[{properties:{page:{size:{width:11906,height:16838},margin:{top:2400,bottom:1500,left:1203,right:1203,header:0,footer:300}}},headers:{default:new Header({children:hd})},footers:{default:new Footer({children:[new Paragraph({border:{top:{style:BorderStyle.SINGLE,size:12,color:'C8102E',space:4}},alignment:AlignmentType.CENTER,children:[t('ATAC chambre des métiers',{bold:true,color:'1F3F8F',size:20})]}),c('Association des Techniciens et Artisans du Congo'),c('Avenue Kamak 2 n°4, entrée Météo, Binza Delvaux, commune de Ngaliema – Kinshasa')]})},children:kids}]});
+ const a=document.createElement('a');a.href=URL.createObjectURL(await Packer.toBlob(dc));a.download='Fiche_ATAC_'+o.nom+'_'+o.prenom+'.docx';a.click()}
+</script></body></html>
